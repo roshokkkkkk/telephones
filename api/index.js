@@ -1,12 +1,15 @@
 import express from 'express';
 import mongoose from "mongoose";
 import router from "./router.js"
+import fileUpload from 'express-fileupload';
 
 const port = 5000;
 const DB_URL = `mongodb://admin:mongo721887@192.168.0.62/phones?authSource=admin`
 const app = express();
 
 app.use(express.json());
+app.use(express.static('static'));
+app.use(fileUpload({}));
 app.use('/api', router)
 
 async function startapp(){
