@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "api3",
   "version": "1.0.0",
   "description": "",
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
     "mongoose": "^9.2.1",

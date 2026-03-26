@@ -1,12 +1,9 @@
-import Router from 'express'
-import PostController from "./PostController.js"
+﻿import { Router } from 'express';
+import AuthController from './AuthController.js';
 
-const router = new Router()
+const router = new Router();
 
-router.post('/posts', PostController.create)
-router.get('/posts', PostController.getAll)
-router.get('/posts/:id', PostController.getOne)
-router.put('/posts', PostController.update)
-router.delete('/posts/:id', PostController.delete)
+router.post('/auth/register', AuthController.register);
+router.post('/auth/login', AuthController.login);
 
 export default router;
