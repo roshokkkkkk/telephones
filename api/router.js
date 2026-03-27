@@ -1,6 +1,7 @@
 ﻿import { Router } from 'express';
 import AuthController from './AuthController.js';
 import UserController from './UserController.js';
+import RoleController from './RoleController.js';
 
 const router = new Router();
 
@@ -12,5 +13,11 @@ router.get('/users', UserController.getAll);
 router.get('/users/:id', UserController.getOne);
 router.put('/users/:id', UserController.update);
 router.delete('/users/:id', UserController.delete);
+
+router.post('/roles', RoleController.create);
+router.get('/roles', RoleController.getAll);
+router.get('/roles/:id', RoleController.getOne);
+router.put('/roles/:id', RoleController.update);
+router.delete('/roles/:id', RoleController.delete);
 
 export default router;
