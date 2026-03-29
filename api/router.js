@@ -3,6 +3,7 @@ import AuthController from './AuthController.js';
 import UserController from './UserController.js';
 import RoleController from './RoleController.js';
 import RoleUserController from './RoleUserController.js';
+import AddressController from './AddressController.js';
 
 const router = new Router();
 
@@ -26,5 +27,11 @@ router.get('/role-users', RoleUserController.getAll);
 router.get('/role-users/:id', RoleUserController.getOne);
 router.put('/role-users/:id', RoleUserController.update);
 router.delete('/role-users/:id', RoleUserController.delete);
+
+router.post('/addresses', AddressController.create);
+router.get('/addresses', AddressController.getAll);
+router.get('/addresses/:id', AddressController.getOne);
+router.put('/addresses/:id', AddressController.update);
+router.delete('/addresses/:id', AddressController.delete);
 
 export default router;
