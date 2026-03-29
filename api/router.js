@@ -4,6 +4,7 @@ import UserController from './UserController.js';
 import RoleController from './RoleController.js';
 import RoleUserController from './RoleUserController.js';
 import AddressController from './AddressController.js';
+import ProductController from './ProductController.js';
 
 const router = new Router();
 
@@ -33,5 +34,12 @@ router.get('/addresses', AddressController.getAll);
 router.get('/addresses/:id', AddressController.getOne);
 router.put('/addresses/:id', AddressController.update);
 router.delete('/addresses/:id', AddressController.delete);
+
+router.post('/products', ProductController.create);
+router.get('/products', ProductController.getAll);
+router.get('/products/:id', ProductController.getOne);
+router.put('/products/:id', ProductController.update);
+router.delete('/products/:id', ProductController.delete);
+router.post('/products/:id/image', ProductController.uploadImage);
 
 export default router;
