@@ -6,6 +6,7 @@ import RoleUserController from './RoleUserController.js';
 import AddressController from './AddressController.js';
 import ProductController from './ProductController.js';
 import CharacteristicController from './CharacteristicController.js';
+import ProductCharacteristicController from './ProductCharacteristicController.js';
 
 const router = new Router();
 
@@ -48,5 +49,11 @@ router.get('/characteristics', CharacteristicController.getAll);
 router.get('/characteristics/:id', CharacteristicController.getOne);
 router.put('/characteristics/:id', CharacteristicController.update);
 router.delete('/characteristics/:id', CharacteristicController.delete);
+
+router.post('/product-characteristics', ProductCharacteristicController.create);
+router.get('/product-characteristics', ProductCharacteristicController.getAll);
+router.get('/product-characteristics/:id', ProductCharacteristicController.getOne);
+router.put('/product-characteristics/:id', ProductCharacteristicController.update);
+router.delete('/product-characteristics/:id', ProductCharacteristicController.delete);
 
 export default router;
