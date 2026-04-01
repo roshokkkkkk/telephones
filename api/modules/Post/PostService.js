@@ -1,5 +1,5 @@
-import Post from "./Post.js"
-import fileService from "./fileService.js"
+﻿import Post from './Post.js'
+import fileService from '../Shared/fileService.js'
 
 class PostService{
     async create (post, picture){
@@ -35,3 +35,4 @@ class PostService{
 }
 
 export default new PostService()
+

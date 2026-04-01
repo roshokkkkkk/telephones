@@ -1,11 +1,11 @@
 ﻿import Product from './Product.js';
-import fileService from './fileService.js';
+import fileService from '../Shared/fileService.js';
 
 class ProductService {
   async create(data, file) {
     const { name, price } = data || {};
     if (!name || price === undefined) {
-      const error = new Error('name and price are required');
+      const error = new Error('название и цена обязательны');
       error.status = 400;
       throw error;
     }
@@ -37,7 +37,7 @@ class ProductService {
 
   async setImage(id, file) {
     if (!file) {
-      const error = new Error('image file is required');
+      const error = new Error('файл изображения обязателен');
       error.status = 400;
       throw error;
     }
@@ -47,3 +47,4 @@ class ProductService {
 }
 
 export default new ProductService();
+

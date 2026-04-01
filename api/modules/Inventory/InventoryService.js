@@ -19,3 +19,4 @@ class InventoryService {
 }
 
 export default new InventoryService();
+

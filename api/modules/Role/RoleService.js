@@ -3,14 +3,14 @@
 class RoleService {
   async create(data) {
     if (!data?.name) {
-      const error = new Error('name is required');
+      const error = new Error('название обязательно');
       error.status = 400;
       throw error;
     }
 
     const existing = await Role.findOne({ name: data.name });
     if (existing) {
-      const error = new Error('role already exists');
+      const error = new Error('роль уже существует');
       error.status = 400;
       throw error;
     }
@@ -30,7 +30,7 @@ class RoleService {
     if (data?.name) {
       const existing = await Role.findOne({ name: data.name, _id: { $ne: id } });
       if (existing) {
-        const error = new Error('role already exists');
+        const error = new Error('роль уже существует');
         error.status = 400;
         throw error;
       }
@@ -45,3 +45,4 @@ class RoleService {
 }
 
 export default new RoleService();
+

@@ -12,14 +12,14 @@ class UserService {
   async create(data) {
     const { email, phone, password } = data;
     if (!email || !password) {
-      const error = new Error('email and password are required');
+      const error = new Error('email и пароль обязательны');
       error.status = 400;
       throw error;
     }
 
     const existing = await User.findOne({ email });
     if (existing) {
-      const error = new Error('email already exists');
+      const error = new Error('email уже существует');
       error.status = 400;
       throw error;
     }
@@ -27,7 +27,7 @@ class UserService {
     if (phone) {
       const existingPhone = await User.findOne({ phone });
       if (existingPhone) {
-        const error = new Error('phone already exists');
+        const error = new Error('телефон уже существует');
         error.status = 400;
         throw error;
       }
@@ -50,7 +50,7 @@ class UserService {
     if (data.email) {
       const existing = await User.findOne({ email: data.email, _id: { $ne: id } });
       if (existing) {
-        const error = new Error('email already exists');
+        const error = new Error('email уже существует');
         error.status = 400;
         throw error;
       }
@@ -59,7 +59,7 @@ class UserService {
     if (data.phone) {
       const existingPhone = await User.findOne({ phone: data.phone, _id: { $ne: id } });
       if (existingPhone) {
-        const error = new Error('phone already exists');
+        const error = new Error('телефон уже существует');
         error.status = 400;
         throw error;
       }
@@ -81,3 +81,4 @@ class UserService {
 }
 
 export default new UserService();
+

@@ -4,7 +4,7 @@ class AddressService {
   async create(data) {
     const { city, street, house, userId } = data || {};
     if (!city || !street || !house || !userId) {
-      const error = new Error('city, street, house, userId are required');
+      const error = new Error('город, улица, дом и userId обязательны');
       error.status = 400;
       throw error;
     }
@@ -29,3 +29,4 @@ class AddressService {
 }
 
 export default new AddressService();
+

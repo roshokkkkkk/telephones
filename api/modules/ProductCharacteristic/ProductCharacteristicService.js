@@ -4,14 +4,14 @@ class ProductCharacteristicService {
   async create(data) {
     const { productId, characteristicId, value } = data || {};
     if (!productId || !characteristicId || !value) {
-      const error = new Error('productId, characteristicId, value are required');
+      const error = new Error('productId, characteristicId и value обязательны');
       error.status = 400;
       throw error;
     }
 
     const existing = await ProductCharacteristic.findOne({ productId, characteristicId });
     if (existing) {
-      const error = new Error('product characteristic already exists');
+      const error = new Error('характеристика товара уже существует');
       error.status = 400;
       throw error;
     }
@@ -30,14 +30,14 @@ class ProductCharacteristicService {
   async update(id, data) {
     const { productId, characteristicId, value } = data || {};
     if (!productId || !characteristicId || !value) {
-      const error = new Error('productId, characteristicId, value are required');
+      const error = new Error('productId, characteristicId и value обязательны');
       error.status = 400;
       throw error;
     }
 
     const existing = await ProductCharacteristic.findOne({ productId, characteristicId, _id: { $ne: id } });
     if (existing) {
-      const error = new Error('product characteristic already exists');
+      const error = new Error('характеристика товара уже существует');
       error.status = 400;
       throw error;
     }
@@ -55,3 +55,5 @@ class ProductCharacteristicService {
 }
 
 export default new ProductCharacteristicService();
+
+

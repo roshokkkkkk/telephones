@@ -14,7 +14,7 @@ class InventoryController {
     try {
       const item = await inventoryService.getByProductId(req.params.productId);
       if (!item) {
-        return res.status(404).json({ message: 'Not found' });
+        return res.status(404).json({ message: 'не найдено' });
       }
       return res.json(item);
     } catch (error) {
@@ -27,7 +27,7 @@ class InventoryController {
       const productId = req.params.productId || req.body.productId;
       const qty = Number(req.body.quantity);
       if (!productId || !Number.isFinite(qty) || qty < 0) {
-        return res.status(400).json({ message: 'productId and valid quantity are required' });
+        return res.status(400).json({ message: 'productId и valid являются обязательными' });
       }
       const item = await inventoryService.setQuantity(productId, qty);
       return res.json(item);

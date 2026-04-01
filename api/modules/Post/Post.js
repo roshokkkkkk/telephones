@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 
 const post = new mongoose.Schema({
     author: {type: String, required: true},

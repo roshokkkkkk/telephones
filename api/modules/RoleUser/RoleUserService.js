@@ -4,14 +4,14 @@ class RoleUserService {
   async create(data) {
     const { roleId, userId } = data || {};
     if (!roleId || !userId) {
-      const error = new Error('roleId and userId are required');
+      const error = new Error('roleId и userId обязательны');
       error.status = 400;
       throw error;
     }
 
     const existing = await RoleUser.findOne({ roleId, userId });
     if (existing) {
-      const error = new Error('role already assigned to user');
+      const error = new Error('роль уже назначена пользователю');
       error.status = 400;
       throw error;
     }
@@ -30,14 +30,14 @@ class RoleUserService {
   async update(id, data) {
     const { roleId, userId } = data || {};
     if (!roleId || !userId) {
-      const error = new Error('roleId and userId are required');
+      const error = new Error('roleId и userId обязательны');
       error.status = 400;
       throw error;
     }
 
     const existing = await RoleUser.findOne({ roleId, userId, _id: { $ne: id } });
     if (existing) {
-      const error = new Error('role already assigned to user');
+      const error = new Error('роль уже назначена пользователю');
       error.status = 400;
       throw error;
     }
@@ -51,3 +51,4 @@ class RoleUserService {
 }
 
 export default new RoleUserService();
+
