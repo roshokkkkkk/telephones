@@ -7,6 +7,7 @@ import AddressController from './AddressController.js';
 import ProductController from './ProductController.js';
 import CharacteristicController from './CharacteristicController.js';
 import ProductCharacteristicController from './ProductCharacteristicController.js';
+import InventoryController from './InventoryController.js';
 
 const router = new Router();
 
@@ -55,5 +56,10 @@ router.get('/product-characteristics', ProductCharacteristicController.getAll);
 router.get('/product-characteristics/:id', ProductCharacteristicController.getOne);
 router.put('/product-characteristics/:id', ProductCharacteristicController.update);
 router.delete('/product-characteristics/:id', ProductCharacteristicController.delete);
+
+router.get('/inventory', InventoryController.getAll);
+router.get('/inventory/:productId', InventoryController.getByProduct);
+router.post('/inventory', InventoryController.setQuantity);
+router.patch('/inventory/:productId', InventoryController.setQuantity);
 
 export default router;
