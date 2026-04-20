@@ -10,6 +10,7 @@ import productCharacteristicRouter from './modules/ProductCharacteristic/Product
 import inventoryRouter from './modules/Inventory/InventoryRouter.js';
 import postRouter from './modules/Post/PostRouter.js';
 import supplyRouter from './modules/Supplies/SupplyRouter.js';
+import saleRouter from './modules/Sales/SaleRouter.js';
 
 const router = new Router();
 
@@ -24,5 +25,6 @@ router.use('/product-characteristics', productCharacteristicRouter);
 router.use('/inventory', inventoryRouter);
 router.use('/posts', postRouter);
 router.use('/supplies', supplyRouter);
+router.use('/sales', saleRouter);
 
 export default router;
