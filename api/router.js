@@ -11,6 +11,7 @@ import inventoryRouter from './modules/Inventory/InventoryRouter.js';
 import postRouter from './modules/Post/PostRouter.js';
 import supplyRouter from './modules/Supplies/SupplyRouter.js';
 import saleRouter from './modules/Sales/SaleRouter.js';
+import cartRouter from './modules/Cart/CartRouter.js';
 
 const router = new Router();
 
@@ -26,5 +27,6 @@ router.use('/inventory', inventoryRouter);
 router.use('/posts', postRouter);
 router.use('/supplies', supplyRouter);
 router.use('/sales', saleRouter);
+router.use('/cart', cartRouter);
 
 export default router;
