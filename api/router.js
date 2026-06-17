@@ -13,6 +13,7 @@ import supplyRouter from './modules/Supplies/SupplyRouter.js';
 import saleRouter from './modules/Sales/SaleRouter.js';
 import cartRouter from './modules/Cart/CartRouter.js';
 import orderRouter from './modules/Orders/OrderRouter.js';
+import statusRouter from './modules/Statuses/StatusRouter.js';
 
 const router = new Router();
 
@@ -30,5 +31,6 @@ router.use('/supplies', supplyRouter);
 router.use('/sales', saleRouter);
 router.use('/cart', cartRouter);
 router.use('/orders', orderRouter);
+router.use('/statuses', statusRouter);
 
 export default router;
