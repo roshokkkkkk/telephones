@@ -14,6 +14,7 @@ import saleRouter from './modules/Sales/SaleRouter.js';
 import cartRouter from './modules/Cart/CartRouter.js';
 import orderRouter from './modules/Orders/OrderRouter.js';
 import statusRouter from './modules/Statuses/StatusRouter.js';
+import orderStatusRouter from './modules/OrderStatuses/OrderStatusRouter.js';
 
 const router = new Router();
 
@@ -32,5 +33,6 @@ router.use('/sales', saleRouter);
 router.use('/cart', cartRouter);
 router.use('/orders', orderRouter);
 router.use('/statuses', statusRouter);
+router.use('/order-statuses', orderStatusRouter);
 
 export default router;
