@@ -15,6 +15,7 @@ import cartRouter from './modules/Cart/CartRouter.js';
 import orderRouter from './modules/Orders/OrderRouter.js';
 import statusRouter from './modules/Statuses/StatusRouter.js';
 import orderStatusRouter from './modules/OrderStatuses/OrderStatusRouter.js';
+import orderItemRouter from './modules/OrderItems/OrderItemRouter.js';
 
 const router = new Router();
 
@@ -34,5 +35,6 @@ router.use('/cart', cartRouter);
 router.use('/orders', orderRouter);
 router.use('/statuses', statusRouter);
 router.use('/order-statuses', orderStatusRouter);
+router.use('/order-items', orderItemRouter);
 
 export default router;
