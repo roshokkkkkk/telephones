@@ -1,4 +1,5 @@
 import Order from '../Orders/Order.js';
+import Product from '../Product/Product.js'; // Добавьте импорт
 
 function recalculateTotal(order) {
   order.total = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -17,28 +18,60 @@ class OrderItemService {
     const qty = Number(quantity);
     const itemPrice = Number(price);
 
+    // Валидация
     if (!orderId || !productId || !Number.isFinite(qty) || qty <= 0 || !Number.isFinite(itemPrice) || itemPrice < 0) {
       const error = new Error('orderId, productId, quantity и price обязательны');
       error.status = 400;
       throw error;
     }
 
+    // Проверяем существование заказа
     const order = await Order.findById(orderId);
     if (!order) {
-      return null;
+      const error = new Error('Заказ не найден');
+      error.status = 404;
+      throw error;
     }
 
-    order.items.push({ productId, quantity: qty, price: itemPrice });
+    // Проверяем существование продукта
+    const product = await Product.findById(productId);
+    if (!product) {
+      const error = new Error('Продукт не найден');
+      error.status = 404;
+      throw error;
+    }
+
+    // Проверяем, не существует ли уже такой товар в заказе
+    const existingItem = order.items.find(item => 
+      item.productId.toString() === productId.toString()
+    );
+    
+    if (existingItem) {
+      // Если товар уже есть, обновляем количество
+      existingItem.quantity += qty;
+      existingItem.price = itemPrice; // Или оставляем старую цену
+    } else {
+      // Добавляем новый товар
+      order.items.push({ productId, quantity: qty, price: itemPrice });
+    }
+
     recalculateTotal(order);
     await order.save();
+    await order.populate('items.productId');
 
-    const createdItem = order.items[order.items.length - 1];
+    // Находим добавленный/обновленный элемент
+    const createdItem = order.items.find(item => 
+      item.productId._id.toString() === productId.toString()
+    );
+    
     return mapOrderItem(order, createdItem);
   }
 
   async getAll() {
     const orders = await Order.find().populate('items.productId');
-    return orders.flatMap((order) => order.items.map((item) => mapOrderItem(order, item)));
+    return orders.flatMap((order) => 
+      order.items.map((item) => mapOrderItem(order, item))
+    );
   }
 
   async getOne(id) {
@@ -48,21 +81,36 @@ class OrderItemService {
     }
 
     const item = order.items.id(id);
-    return item ? mapOrderItem(order, item) : null;
+    if (!item) {
+      return null;
+    }
+
+    return mapOrderItem(order, item);
   }
 
   async update(id, data) {
     const order = await Order.findOne({ 'items._id': id });
     if (!order) {
-      return null;
+      const error = new Error('Элемент заказа не найден');
+      error.status = 404;
+      throw error;
     }
 
     const item = order.items.id(id);
     if (!item) {
-      return null;
+      const error = new Error('Элемент заказа не найден');
+      error.status = 404;
+      throw error;
     }
 
+    // Проверка продукта при обновлении
     if (data.productId) {
+      const product = await Product.findById(data.productId);
+      if (!product) {
+        const error = new Error('Продукт не найден');
+        error.status = 404;
+        throw error;
+      }
       item.productId = data.productId;
     }
 
@@ -90,18 +138,24 @@ class OrderItemService {
     await order.save();
     await order.populate('items.productId');
 
-    return mapOrderItem(order, item);
+    // Находим обновленный элемент
+    const updatedItem = order.items.id(id);
+    return mapOrderItem(order, updatedItem);
   }
 
   async delete(id) {
     const order = await Order.findOne({ 'items._id': id });
     if (!order) {
-      return null;
+      const error = new Error('Элемент заказа не найден');
+      error.status = 404;
+      throw error;
     }
 
     const item = order.items.id(id);
     if (!item) {
-      return null;
+      const error = new Error('Элемент заказа не найден');
+      error.status = 404;
+      throw error;
     }
 
     const deletedItem = mapOrderItem(order, item);

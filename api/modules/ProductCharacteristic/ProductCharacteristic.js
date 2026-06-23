@@ -2,8 +2,8 @@
 
 const productCharacteristicSchema = new mongoose.Schema(
   {
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    characteristicId: { type: mongoose.Schema.Types.ObjectId, ref: 'Characteristic', required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'product', required: true },
+    characteristicId: { type: mongoose.Schema.Types.ObjectId, ref: 'characteristic', required: true },
     value: { type: String, required: true, trim: true },
   },
   { timestamps: true }
