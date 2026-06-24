@@ -1,4 +1,4 @@
-﻿import Supply from './Supply.js';
+import Supply from './Supply.js';
 import inventoryService from '../Inventory/InventoryService.js';
 
 class SupplyService {
@@ -12,9 +12,7 @@ class SupplyService {
     }
 
     const supply = await Supply.create({ ...data, quantity: qty });
-    const current = await inventoryService.getByProductId(productId);
-    const currentQty = current?.quantity || 0;
-    await inventoryService.setQuantity(productId, currentQty + qty);
+    await inventoryService.increase(productId, qty);
     return supply;
   }
 
@@ -27,11 +25,52 @@ class SupplyService {
   }
 
   async update(id, data) {
-    return Supply.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+    const supply = await Supply.findById(id);
+    if (!supply) {
+      return null;
+    }
+
+    const oldProductId = supply.productId.toString();
+    const oldQty = supply.quantity;
+    const newProductId = data.productId || oldProductId;
+    const newQty = data.quantity === undefined ? oldQty : Number(data.quantity);
+
+    if (!Number.isFinite(newQty) || newQty <= 0) {
+      const error = new Error('quantity должна быть больше 0');
+      error.status = 400;
+      throw error;
+    }
+
+    if (oldProductId === newProductId) {
+      const diff = newQty - oldQty;
+      if (diff > 0) {
+        await inventoryService.increase(newProductId, diff);
+      }
+      if (diff < 0) {
+        await inventoryService.decrease(newProductId, Math.abs(diff));
+      }
+    } else {
+      await inventoryService.decrease(oldProductId, oldQty);
+      try {
+        await inventoryService.increase(newProductId, newQty);
+      } catch (error) {
+        await inventoryService.increase(oldProductId, oldQty);
+        throw error;
+      }
+    }
+
+    Object.assign(supply, { ...data, productId: newProductId, quantity: newQty });
+    await supply.save();
+    return supply.populate('productId');
   }
 
   async delete(id) {
-    return Supply.findByIdAndDelete(id);
+    const supply = await Supply.findByIdAndDelete(id);
+    if (supply) {
+      await inventoryService.decrease(supply.productId, supply.quantity);
+    }
+
+    return supply;
   }
 }
 

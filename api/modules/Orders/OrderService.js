@@ -54,9 +54,7 @@ class OrderService {
     });
 
     for (const item of cartItems) {
-      const inventory = await inventoryService.getByProductId(item.productId._id);
-      const currentQty = inventory?.quantity || 0;
-      await inventoryService.setQuantity(item.productId._id, currentQty - item.quantity);
+      await inventoryService.decrease(item.productId._id, item.quantity);
     }
 
     await Cart.deleteMany({ userId });

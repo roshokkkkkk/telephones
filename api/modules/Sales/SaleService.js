@@ -11,18 +11,8 @@ class SaleService {
       throw error;
     }
 
-    const current = await inventoryService.getByProductId(productId);
-    const currentQty = current?.quantity || 0;
-
-    if (currentQty < qty) {
-      const error = new Error('недостаточно товара на складе');
-      error.status = 400;
-      throw error;
-    }
-
-    const sale = await Sale.create({ ...data, quantity: qty });
-    await inventoryService.setQuantity(productId, currentQty - qty);
-    return sale;
+    await inventoryService.decrease(productId, qty);
+    return Sale.create({ ...data, quantity: qty });
   }
 
   async getAll() {
@@ -34,11 +24,52 @@ class SaleService {
   }
 
   async update(id, data) {
-    return Sale.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+    const sale = await Sale.findById(id);
+    if (!sale) {
+      return null;
+    }
+
+    const oldProductId = sale.productId.toString();
+    const oldQty = sale.quantity;
+    const newProductId = data.productId || oldProductId;
+    const newQty = data.quantity === undefined ? oldQty : Number(data.quantity);
+
+    if (!Number.isFinite(newQty) || newQty <= 0) {
+      const error = new Error('quantity должна быть больше 0');
+      error.status = 400;
+      throw error;
+    }
+
+    if (oldProductId === newProductId) {
+      const diff = newQty - oldQty;
+      if (diff > 0) {
+        await inventoryService.decrease(newProductId, diff);
+      }
+      if (diff < 0) {
+        await inventoryService.increase(newProductId, Math.abs(diff));
+      }
+    } else {
+      await inventoryService.increase(oldProductId, oldQty);
+      try {
+        await inventoryService.decrease(newProductId, newQty);
+      } catch (error) {
+        await inventoryService.decrease(oldProductId, oldQty);
+        throw error;
+      }
+    }
+
+    Object.assign(sale, { ...data, productId: newProductId, quantity: newQty });
+    await sale.save();
+    return sale.populate('productId');
   }
 
   async delete(id) {
-    return Sale.findByIdAndDelete(id);
+    const sale = await Sale.findByIdAndDelete(id);
+    if (sale) {
+      await inventoryService.increase(sale.productId, sale.quantity);
+    }
+
+    return sale;
   }
 }
 

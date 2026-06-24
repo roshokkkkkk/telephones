@@ -5,7 +5,7 @@ import fileUpload from 'express-fileupload';
 import swaggerDocument from './swagger.js';
 
 const port = 5000;
-const DB_URL = 'mongodb://admin:mongo721887@192.168.0.62/phones?authSource=admin';
+const DB_URL = 'mongodb+srv://roshok21:12485700@cluster0.g2kuu6p.mongodb.net/';
 const app = express();
 
 app.use(express.json());
